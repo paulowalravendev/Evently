@@ -1,7 +1,6 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Evently.Modules.Events.Domain.Abstractions;
+namespace Evently.Common.Domain;
 
 public class Result
 {
