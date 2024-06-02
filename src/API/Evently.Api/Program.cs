@@ -1,3 +1,4 @@
+using System.Reflection;
 using Evently.Api.Extensions;
 using Evently.Common.Application;
 using Evently.Common.Infrastructure;
@@ -11,8 +12,11 @@ builder.Services.AddSwaggerGen(options =>
     options.CustomSchemaIds(t => t.FullName?.Replace("+", "."));
 });
 
-builder.Services.AddApplication([
-    Evently.Modules.Events.Application.AssemblyReference.Assembly]);
+Assembly[] assembliesModules = [Evently.Modules.Events.Application.AssemblyReference.Assembly];
+
+builder.Configuration.AddModuleConfiguration(assembliesModules);
+
+builder.Services.AddApplication(assembliesModules);
 
 builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("Database")!);
 
