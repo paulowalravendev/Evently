@@ -4,7 +4,7 @@ namespace Evently.Api.Extensions;
 
 internal static class ConfigurationExtensions
 {
-    internal static void AddModuleConfiguration(this IConfigurationBuilder configurationBuilder, Assembly[] assemblies)
+    internal static void AddModuleConfiguration(this IConfigurationBuilder configurationBuilder, params Assembly[] assemblies)
     {
         IEnumerable<string> modules = assemblies.Select(assembly => assembly.FullName!.Split('.')[2].ToLowerInvariant());
 
