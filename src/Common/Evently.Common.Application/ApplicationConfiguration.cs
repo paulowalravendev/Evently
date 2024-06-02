@@ -14,7 +14,9 @@ public static class ApplicationConfiguration
         services.AddMediatR(cfg => {
             cfg.RegisterServicesFromAssemblies(modulesAssemblies);
 
+            cfg.AddOpenBehavior(typeof(ExceptionHandlingPipelineBehavior<,>));
             cfg.AddOpenBehavior(typeof(RequestLoggingPipelineBehavior<,>));
+            cfg.AddOpenBehavior(typeof(ValidationPipelineBehavior<,>));
         });
 
         services.AddValidatorsFromAssemblies(modulesAssemblies,includeInternalTypes: true);
