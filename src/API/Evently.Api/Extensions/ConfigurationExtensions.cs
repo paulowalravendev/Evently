@@ -6,8 +6,7 @@ internal static class ConfigurationExtensions
 {
     internal static void AddModuleConfiguration(this IConfigurationBuilder configurationBuilder, Assembly[] assemblies)
     {
-        string[] modules = assemblies.Select(assembly => 
-            assembly.FullName!.Replace("Evently.Modules.", string.Empty).Split(".")[0].ToLowerInvariant()).ToArray();
+        IEnumerable<string> modules = assemblies.Select(assembly => assembly.FullName!.Split('.')[2].ToLowerInvariant());
 
         foreach (string module in modules)
         {
