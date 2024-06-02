@@ -26,7 +26,9 @@ builder.Configuration.AddModuleConfiguration(assembliesModules);
 
 builder.Services.AddApplication(assembliesModules);
 
-builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("Database")!);
+builder.Services.AddInfrastructure(
+    builder.Configuration.GetConnectionString("Database")!,
+    builder.Configuration.GetConnectionString("Cache")!);
 
 builder.Services.AddEventsModule(builder.Configuration);
 
