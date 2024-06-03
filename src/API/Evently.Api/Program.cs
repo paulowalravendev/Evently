@@ -5,6 +5,7 @@ using Evently.Common.Application;
 using Evently.Common.Infrastructure;
 using Evently.Common.Presentation.Endpoints;
 using Evently.Modules.Events.Infrastructure.Events;
+using Evently.Modules.Users.Infrastructure;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Serilog;
@@ -23,7 +24,9 @@ builder.Services.AddSwaggerGen(options =>
     options.CustomSchemaIds(t => t.FullName?.Replace("+", "."));
 });
 
-Assembly[] assembliesModules = [Evently.Modules.Events.Application.AssemblyReference.Assembly];
+Assembly[] assembliesModules = [
+    Evently.Modules.Events.Application.AssemblyReference.Assembly,
+    Evently.Modules.Users.Application.AssemblyReference.Assembly];
 
 builder.Configuration.AddModuleConfiguration(assembliesModules);
 
@@ -41,6 +44,7 @@ builder.Services.AddHealthChecks()
     .AddRedis(redisConnectionString);
 
 builder.Services.AddEventsModule(builder.Configuration);
+builder.Services.AddUsersModule(builder.Configuration);
 
 WebApplication app = builder.Build();
 
