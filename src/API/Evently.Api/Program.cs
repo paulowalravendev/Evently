@@ -6,6 +6,7 @@ using Evently.Common.Infrastructure;
 using Evently.Common.Presentation.Endpoints;
 using Evently.Modules.Events.Infrastructure.Events;
 using Evently.Modules.Users.Infrastructure;
+using Evently.Modules.Ticketing.Infrastructure;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Serilog;
@@ -26,7 +27,8 @@ builder.Services.AddSwaggerGen(options =>
 
 Assembly[] assembliesModules = [
     Evently.Modules.Events.Application.AssemblyReference.Assembly,
-    Evently.Modules.Users.Application.AssemblyReference.Assembly];
+    Evently.Modules.Users.Application.AssemblyReference.Assembly,
+    Evently.Modules.Ticketing.Application.AssemblyReference.Assembly];
 
 builder.Configuration.AddModuleConfiguration(assembliesModules);
 
@@ -45,6 +47,7 @@ builder.Services.AddHealthChecks()
 
 builder.Services.AddEventsModule(builder.Configuration);
 builder.Services.AddUsersModule(builder.Configuration);
+builder.Services.AddTicketingModule();
 
 WebApplication app = builder.Build();
 
