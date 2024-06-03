@@ -1,7 +1,16 @@
-﻿using Evently.Common.Presentation.Endpoints;
+﻿using Evently.Common.Infrastructure.Interceptors;
+using Evently.Common.Presentation.Endpoints;
+using Evently.Modules.Ticketing.Application.Abstractions.Data;
 using Evently.Modules.Ticketing.Application.Carts;
+using Evently.Modules.Ticketing.Domain.Customers;
+using Evently.Modules.Ticketing.Infrastructure.Customers;
+using Evently.Modules.Ticketing.Infrastructure.Database;
+using Evently.Modules.Ticketing.Infrastructure.PublicApi;
+using Evently.Modules.Ticketing.PublicApi;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Evently.Modules.Ticketing.Infrastructure;
 
@@ -18,14 +27,25 @@ public static class TicketingModule
         return services;
     }
 
-#pragma warning disable S1172 // Unused method parameters should be removed
-#pragma warning disable IDE0060 // Remove unused parameter
     private static void AddInfrastructure(
         this IServiceCollection services,
         IConfiguration configuration)
-#pragma warning restore IDE0060 // Remove unused parameter
-#pragma warning restore S1172 // Unused method parameters should be removed
     {
+        services.AddDbContext<TicketingDbContext>((sp, options) =>
+            options
+                .UseNpgsql(
+                    configuration.GetConnectionString("Database"),
+                    npgsqlOptions => npgsqlOptions
+                        .MigrationsHistoryTable(HistoryRepository.DefaultTableName, Schemas.Ticketing))
+                .AddInterceptors(sp.GetRequiredService<PublishDomainEventsInterceptor>())
+                .UseSnakeCaseNamingConvention());
+
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
+
+        services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<TicketingDbContext>());
+
         services.AddSingleton<CartService>();
+
+        services.AddScoped<ITicketingApi, TicketingApi>();
     }
 }
