@@ -11,6 +11,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Evently.Modules.Ticketing.Presentation.Customers;
 using MassTransit;
+using Evently.Modules.Ticketing.Infrastructure.Events;
+using Evently.Modules.Ticketing.Domain.Events;
 
 namespace Evently.Modules.Ticketing.Infrastructure;
 
@@ -46,6 +48,9 @@ public static class TicketingModule
                 .UseSnakeCaseNamingConvention());
 
         services.AddScoped<ICustomerRepository, CustomerRepository>();
+
+        services.AddScoped<IEventRepository, EventRepository>();
+        services.AddScoped<ITicketTypeRepository, TicketTypeRepository>();
 
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<TicketingDbContext>());
 
