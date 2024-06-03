@@ -7,6 +7,7 @@ using Evently.Modules.Users.Infrastructure.Users;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Evently.Common.Presentation.Endpoints;
 
 namespace Evently.Modules.Users.Infrastructure;
 
@@ -17,6 +18,8 @@ public static class UsersModule
         IConfiguration configuration)
     {
         services.AddInfrastructure(configuration);
+
+        services.AddEndpoints(Presentation.AssemblyReference.Assembly);
 
         return services;
     }
