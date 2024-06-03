@@ -2,8 +2,10 @@
 using Evently.Modules.Ticketing.Application.Abstractions.Data;
 using Evently.Modules.Ticketing.Domain.Customers;
 using Evently.Modules.Ticketing.Domain.Events;
+using Evently.Modules.Ticketing.Domain.Tickets;
 using Evently.Modules.Ticketing.Infrastructure.Customers;
 using Evently.Modules.Ticketing.Infrastructure.Events;
+using Evently.Modules.Ticketing.Infrastructure.Tickets;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -18,6 +20,8 @@ public sealed class TicketingDbContext(DbContextOptions<TicketingDbContext> opti
 
     internal DbSet<TicketType> TicketTypes { get; set; }
 
+    internal DbSet<Ticket> Tickets { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema(Schemas.Ticketing);
@@ -26,6 +30,8 @@ public sealed class TicketingDbContext(DbContextOptions<TicketingDbContext> opti
 
         modelBuilder.ApplyConfiguration(new EventConfiguration());
         modelBuilder.ApplyConfiguration(new TicketTypeConfiguration());
+
+        modelBuilder.ApplyConfiguration(new TicketConfiguration());
     }
 
     public async Task<DbTransaction> BeginTransactionAsync(
