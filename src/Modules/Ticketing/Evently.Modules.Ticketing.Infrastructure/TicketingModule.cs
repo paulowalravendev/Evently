@@ -15,6 +15,8 @@ using Evently.Modules.Ticketing.Infrastructure.Events;
 using Evently.Modules.Ticketing.Domain.Events;
 using Evently.Modules.Ticketing.Domain.Tickets;
 using Evently.Modules.Ticketing.Infrastructure.Tickets;
+using Evently.Modules.Ticketing.Domain.Orders;
+using Evently.Modules.Ticketing.Infrastructure.Orders;
 
 namespace Evently.Modules.Ticketing.Infrastructure;
 
@@ -55,6 +57,8 @@ public static class TicketingModule
         services.AddScoped<ITicketTypeRepository, TicketTypeRepository>();
 
         services.AddScoped<ITicketRepository, TicketRepository>();
+
+        services.AddScoped<IOrderRepository, OrderRepository>();
 
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<TicketingDbContext>());
 
