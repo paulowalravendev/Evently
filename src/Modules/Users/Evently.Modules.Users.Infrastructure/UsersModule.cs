@@ -11,6 +11,8 @@ using Evently.Common.Presentation.Endpoints;
 using Evently.Modules.Users.Application.Abstractions.Identity;
 using Evently.Modules.Users.Infrastructure.Identity;
 using Microsoft.Extensions.Options;
+using Evently.Common.Application.Authorization;
+using Evently.Modules.Users.Infrastructure.Authorization;
 
 namespace Evently.Modules.Users.Infrastructure;
 
@@ -29,6 +31,7 @@ public static class UsersModule
 
     private static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddScoped<IPermissionService, PermissionService>();
 
         services.Configure<KeyCloakOptions>(configuration.GetSection("Users:KeyCloak"));
 
